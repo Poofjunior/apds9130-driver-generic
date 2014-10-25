@@ -14,29 +14,44 @@
 #include <stdint.h>
 #include "embeddedCommon.h"  /// contains read(...) and write(...) fns.
 /// Important VL6180 settings
-struct apds9130-params {
-    const uint8_t deviceAddress_ = 0x39; // 7-bit address in struct to prevent
+struct apds9130_Params {
+    const uint8_t deviceAddress_; // 7-bit address in struct to prevent
                                          // name clashes for other sensors.
     uint8_t proxIntegrationTime;
     uint8_t waitTime;
     uint8_t proxPulseCount;
 
-    uint8_t pulseDriveCurrent;
-    const uint8_t proxDiodeSelect = 0x02;
+    uint8_t proxDriveCurrent;
+    const uint8_t proxDiodeSelect;
     uint8_t proxGain;
     
     /// Constants for performing a read.
     uint8_t waitEnable;
     uint8_t proxEnable;
     uint8_t powerOn;
-} apds9130-params;
+} apds9130_Params = 
+{
+    0x39,   // device address (cannot be changed)
+
+    0xff,   // proxIntegrationTime
+    0xff,   // waitTime
+    0x01,   // proxPulseCount
+
+    0x0,    // proxDriveCurrent
+    0x20,   // proxDiodeSelect (cannot be changed)
+    0x0,    // proxGain
+
+    0x0,    // waitEnable
+    0x0,    // proxEnable
+    0x0     // powerOn
+};
 
 /// Prototypes:
 void initAPDS9130();
 uint16_t readProxData();
 
 // The following two functions are used in tandem;
-uint16_t initDataCollection();  
+void initDataCollection();  
 uint16_t readProxDataNonBlocking();
 
 
@@ -47,9 +62,9 @@ uint16_t readProxDataNonBlocking();
 /// Register Addresses: (datasheet page 16)
 const uint8_t ENABLE_   = 0x00;
     /// ENABLE_ register bitfield offsets:
-    const uint8_ PON    = 0x00; 
-    const uint8_ PEN    = 0x02;
-    const uint8_ WEN    = 0x03;
+    const uint8_t PON    = 0x00; 
+    const uint8_t PEN    = 0x02;
+    const uint8_t WEN    = 0x03;
 const uint8_t PTIME_    = 0x02;
 const uint8_t WTIME_    = 0x03;
 const uint8_t PILTL_    = 0x08;
@@ -68,7 +83,7 @@ const uint8_t ID_       = 0x12;
 const uint8_t STATUS_   = 0x13;
 const uint8_t CH0DATA_  = 0x14;
 const uint8_t CH1DATA_  = 0x16;
-const uint8_t PDATAL    = 0x18;
+const uint8_t PDATAL_    = 0x18;
 const uint8_t PDATAH_   = 0x19;
 const uint8_t POFFSET_  = 0x1E;
 
