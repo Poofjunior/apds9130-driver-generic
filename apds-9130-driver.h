@@ -1,6 +1,5 @@
 #ifndef APDS_9130_DRIVER_H
 #define APDS_9130_DRIVER_H 
-
 /**
  * \project apds-9130-driver
  * \brief   a generic driver providing the most basic functionality 
@@ -25,6 +24,11 @@ struct apds9130-params {
     uint8_t pulseDriveCurrent;
     const uint8_t proxDiodeSelect = 0x02;
     uint8_t proxGain;
+    
+    /// Constants for performing a read.
+    uint8_t waitEnable;
+    uint8_t proxEnable;
+    uint8_t powerOn;
 } apds9130-params;
 
 /// Prototypes:
@@ -62,6 +66,8 @@ const uint8_t CONTROL_  = 0x0F;
     const uint8_t PDRIVE_   = 0x06;
 const uint8_t ID_       = 0x12;
 const uint8_t STATUS_   = 0x13;
+const uint8_t CH0DATA_  = 0x14;
+const uint8_t CH1DATA_  = 0x16;
 const uint8_t PDATAL    = 0x18;
 const uint8_t PDATAH_   = 0x19;
 const uint8_t POFFSET_  = 0x1E;

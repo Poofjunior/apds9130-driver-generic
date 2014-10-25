@@ -18,7 +18,14 @@ void write(PERIPHERAL periph, uint8_t startReg, uint8_t numBytes,
 void delayMS( uint16_t ms);
 
 void readOne(PERIPHERAL periph, uint8_t startReg, uint8_t* data);
+{
+    return read(periph, startreg, 1, &data);
+}
 void writeOne(PERIPHERAL periph, uint8_t startReg, uint8_t data);
+{
+    return write(periph, startreg, 1, &data);
+}
+
 
 
 #endif // EMBEDDED_COMMON_H
