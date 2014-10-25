@@ -55,10 +55,6 @@ void initDataCollection();
 uint16_t readProxDataNonBlocking();
 
 
-/// helper funcs:
-
-/// Constants:
-
 /// Register Addresses: (datasheet page 16)
 const uint8_t ENABLE_   = 0x00;
     /// ENABLE_ register bitfield offsets:

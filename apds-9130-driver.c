@@ -28,7 +28,7 @@ void initAPDS9130()
     uint8_t dataToSend = (apds9130_Params.proxDriveCurrent << PDRIVE_) |
                          (apds9130_Params.proxGain << PGAIN_) | 
                          (apds9130_Params.proxDiodeSelect << PDIODE_);
-    writeOne(I2C, CONTROL_, dataToSend); 
+    writeOne(I2C, apds9130_Params.deviceAddress_, CONTROL_, dataToSend); 
 }
 
 void initDataCollection()
@@ -41,13 +41,13 @@ void initDataCollection()
     uint8_t dataToSend = (apds9130_Params.waitEnable << WEN) |
                          (apds9130_Params.proxEnable << PEN) |
                          (apds9130_Params.powerOn    << PON);
-    writeOne(I2C, ENABLE_, dataToSend);
+    writeOne(I2C, apds9130_Params.deviceAddress_, ENABLE_, dataToSend);
 }
 
 uint16_t readProxDataNonBlocking()
 {
     uint8_t dataReceived[2];
-    read(I2C, PDATAL_, 2, dataReceived);
+    read(I2C, apds9130_Params.deviceAddress_, PDATAL_, 2, dataReceived);
     return (uint16_t)dataReceived[0] | ((uint16_t)dataReceived[1] << 8);
 }
 
