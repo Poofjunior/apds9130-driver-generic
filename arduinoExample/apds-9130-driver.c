@@ -19,7 +19,7 @@ struct sensorParams apds9130_Params =
     0x01,   // proxPulseCount                                                   
                                                                                 
     0x0,    // proxDriveCurrent                                                 
-    0x20,   // proxDiodeSelect (cannot be changed)                              
+    0x02,   // proxDiodeSelect (cannot be changed)                              
     0x0,    // proxGain                                                         
                                                                                 
     0x0,    // waitEnable                                                       
@@ -36,7 +36,7 @@ void initAPDS9130()
 
     apds9130_Params.proxPulseCount = 0x01;
     apds9130_Params.proxDriveCurrent = 0x0; 
-    //apds9130_Params.proxDiodeSelect = 0x20;
+    apds9130_Params.proxDiodeSelect = 0x02;
     apds9130_Params.proxGain = 0x0;
 
 
@@ -45,7 +45,17 @@ void initAPDS9130()
     uint8_t dataToSend = (apds9130_Params.proxDriveCurrent << PDRIVE_) |
                          (apds9130_Params.proxGain << PGAIN_) | 
                          (apds9130_Params.proxDiodeSelect << PDIODE_);
-    writeOne(I2C, apds9130_Params.deviceAddress_, CONTROL_, dataToSend); 
+
+    uint8_t cmdByte = (0x01 << 7) | (0x01 << 5) | CONTROL_;
+
+    writeOne(I2C, apds9130_Params.deviceAddress_, cmdByte, dataToSend); 
+}
+
+void clearSaturation()
+{
+    /// Send special 'clear saturation' command.
+    uint8_t cmdCode = (0x01 << 7) | (0x03 << 5) | (0x05);
+    write(I2C, apds9130_Params.deviceAddress_, cmdCode, 0, 0x00);
 }
 
 void initDataCollection()
@@ -58,13 +68,18 @@ void initDataCollection()
     uint8_t dataToSend = (apds9130_Params.waitEnable << WEN) |
                          (apds9130_Params.proxEnable << PEN) |
                          (apds9130_Params.powerOn    << PON);
-    writeOne(I2C, apds9130_Params.deviceAddress_, ENABLE_, dataToSend);
+
+    uint8_t cmdByte = (0x01 << 7) | (0x01 << 5) | ENABLE_;
+
+    writeOne(I2C, apds9130_Params.deviceAddress_, cmdByte, dataToSend);
 }
 
 uint16_t readProxDataNonBlocking()
 {
     uint8_t dataReceived[2];
-    read(I2C, apds9130_Params.deviceAddress_, PDATAL_, 2, dataReceived);
+    // Format cmdByte to include starting reg
+    uint8_t cmdByte = (0x01 << 7) | (0x01 << 5) | (PDATAL_);
+    read(I2C, apds9130_Params.deviceAddress_, cmdByte, 2, dataReceived);
     return (uint16_t)dataReceived[0] | ((uint16_t)dataReceived[1] << 8);
 }
 

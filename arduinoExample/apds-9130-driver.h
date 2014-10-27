@@ -17,7 +17,7 @@ extern "C" {
 
 #include <stdint.h>
 #include "embeddedCommon.h"  /// contains read(...) and write(...) fns.
-/// Important VL6180 settings
+/// Important VL6180 settings declared in a struct.
 struct sensorParams {
     /*const*/ uint8_t deviceAddress_; // 7-bit address in struct to prevent
                                          // name clashes for other sensors.
@@ -34,60 +34,53 @@ struct sensorParams {
     uint8_t proxEnable;
     uint8_t powerOn;
 }; 
-/*
-{
-    0x39,   // device address (cannot be changed)
 
-    0xff,   // proxIntegrationTime
-    0xff,   // waitTime
-    0x01,   // proxPulseCount
-
-    0x0,    // proxDriveCurrent
-    0x20,   // proxDiodeSelect (cannot be changed)
-    0x0,    // proxGain
-
-    0x0,    // waitEnable
-    0x0,    // proxEnable
-    0x0     // powerOn
-};
-*/
 
 /// Prototypes:
 void initAPDS9130();
 uint16_t readProxData();
+void clearSaturation();
 
-// The following two functions are used in tandem;
+/// The following two functions are used together one after the other to get
+///  sensor data;
 void initDataCollection();  
 uint16_t readProxDataNonBlocking();
 
 
 /// Register Addresses: (datasheet page 16)
-const uint8_t ENABLE_   = 0x00;
-    /// ENABLE_ register bitfield offsets:
-    const uint8_t PON    = 0x00; 
-    const uint8_t PEN    = 0x02;
-    const uint8_t WEN    = 0x03;
-const uint8_t PTIME_    = 0x02;
-const uint8_t WTIME_    = 0x03;
-const uint8_t PILTL_    = 0x08;
-const uint8_t PILTH_    = 0x09;
-const uint8_t PIHTL_    = 0x0A;
-const uint8_t PIHTH_    = 0x0B;
-const uint8_t PERS_     = 0x0C;
-const uint8_t CONFIG_   = 0x0D;
-const uint8_t PPULSE_   = 0x0E;
-const uint8_t CONTROL_  = 0x0F;
-    /// CONTROL_ register bitfield offsets:
-    const uint8_t PGAIN_    = 0x02;
-    const uint8_t PDIODE_   = 0x04;
-    const uint8_t PDRIVE_   = 0x06;
-const uint8_t ID_       = 0x12;
-const uint8_t STATUS_   = 0x13;
-const uint8_t CH0DATA_  = 0x14;
-const uint8_t CH1DATA_  = 0x16;
-const uint8_t PDATAL_    = 0x18;
-const uint8_t PDATAH_   = 0x19;
-const uint8_t POFFSET_  = 0x1E;
+/// note: declaring these values as static const will create a new set of 
+///       these variables in EVERY file that #includes the header file.
+/// note: static const alternative would be to #define these values.
+/// note: If you are constrained for space on your microcontroller, consider
+///       replacing these variables with #defines.  
+static const uint8_t ENABLE_   = 0x00;
+/// ENABLE_ register bitfield offsets:
+    static const uint8_t PON    = 0x00; 
+    static const uint8_t PEN    = 0x02;
+    static const uint8_t WEN    = 0x03;
+static const uint8_t PTIME_    = 0x02;
+static const uint8_t WTIME_    = 0x03;
+static const uint8_t PILTL_    = 0x08;
+static const uint8_t PILTH_    = 0x09;
+static const uint8_t PIHTL_    = 0x0A;
+static const uint8_t PIHTH_    = 0x0B;
+static const uint8_t PERS_     = 0x0C;
+static const uint8_t CONFIG_   = 0x0D;
+static const uint8_t PPULSE_   = 0x0E;
+static const uint8_t CONTROL_  = 0x0F;
+    static const uint8_t PGAIN_    = 0x02;
+    static const uint8_t PDIODE_   = 0x04;
+    static const uint8_t PDRIVE_   = 0x06;
+static const uint8_t ID_       = 0x12;
+static const uint8_t STATUS_   = 0x13;
+    static const uint8_t PVALID_ = 0x01;
+    static const uint8_t PINT_ = 0x05;
+    static const uint8_t PSAT_ = 0x06;
+static const uint8_t CH0DATA_  = 0x14;
+static const uint8_t CH1DATA_  = 0x16;
+static const uint8_t PDATAL_    = 0x18;
+static const uint8_t PDATAH_   = 0x19;
+static const uint8_t POFFSET_  = 0x1E;
 
 #endif // APDS_9130_H
 #ifdef __cplusplus
