@@ -1,7 +1,7 @@
 /**
  * \project apds9130-driver
  * \brief   a generic driver providing the most basic functionality 
- *          for the vl6180 proximity sensor. In a nutshell, you 
+ *          for the apds-9130 proximity sensor. In a nutshell, you 
  *          implement the three functions read(...) and write(...), 
  *          and delayMS(...) on the microcontroller of your choice, 
  *          and the rest is done for you.
