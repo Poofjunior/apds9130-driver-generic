@@ -16,6 +16,9 @@ reflectance sensor.
 You, the embedded programmer, implement read(...), write(...), and delayMS(...)
 for your application; and the driver handles the rest.
 
+Note: for the examples featured, these functions have already been implemented.
+
+
 ## Quirks
 The sensor passes data to the requesting master device over an i2c interface.
 While many manufacturers tend to follow the protocol format:
