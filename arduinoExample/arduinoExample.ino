@@ -4,7 +4,7 @@
  * \date October 25, 2014
  */
 #include "embeddedCommon.h"
-#include "apds-9130-driver.h"
+#include <apds-9130-driver.h>
 #include <Wire.h>
 
 
