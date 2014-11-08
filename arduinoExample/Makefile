@@ -2,6 +2,10 @@
 
 BOARD_TAG    = uno
 ARDUINO_LIBS = Wire
+ARDUINO_LIBS += apds-9130-driver 
+
+USER_LIB_PATH = ../
+
 include $(ARDMK_DIR)/Arduino.mk
 
 
